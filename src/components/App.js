@@ -13,6 +13,7 @@ export default class App extends React.Component {
       gender: "",
       agree: true,
       avatar: "",
+      age: 16,
       errors: {}
     }
   }
@@ -69,6 +70,38 @@ export default class App extends React.Component {
         {item.name}
       </option>
     ));
+  };
+
+  incrementAge = () => {
+    this.setState(
+      (prevState, prevProps) => ({
+        age: prevState.age + 1
+      }),
+      () => {
+        console.log("callback", this.state.age);
+        this.setState({
+          errors: {
+            age: this.state.age >= 18 ? false : "Must be 18 or more"
+          }
+        });
+      }
+    );
+  };
+
+  decrementAge = () => {
+    this.setState(
+      {
+        age: this.state.age - 1
+      },
+      () => {
+        console.log("callback", this.state.age);
+        this.setState({
+          errors: {
+            age: this.state.age >= 18 ? false : "Must be 18 or more"
+          }
+        });
+      }
+    );
   };
 
   render() {
@@ -178,6 +211,38 @@ export default class App extends React.Component {
               name="avatar"
               onChange={this.onChangeAvatar}
             />
+          </div>
+          <div className="form-group">
+            <div>
+              <label>Age</label>
+            </div>
+            <div className="btn-group">
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={this.decrementAge}
+              >
+                -
+              </button>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Enter age"
+                name="age"
+                value={this.state.age}
+                onChange={this.onChange}
+              />
+              <button
+                className="btn btn-secondary"
+                type="button"
+                onClick={this.incrementAge}
+              >
+                +
+              </button>
+            </div>
+            {this.state.errors.age ? (
+              <div className="invalid-feedback">{this.state.errors.age}</div>
+            ) : null}
           </div>
           <div className="form-check mb-2">
             <input
